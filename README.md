@@ -1,6 +1,8 @@
-# sakura-iot
+# sakuraio-api
 
-さくらのIoT Platform用 APIライブラリ
+さくらのIoT Platform用 APIライブラリ(for golang)
+
+**This project is still developing.**
 
 ## License
 
