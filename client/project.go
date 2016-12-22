@@ -6,6 +6,23 @@ import (
 	"github.com/yamamoto-febc/sakuraio-api/gen/models"
 )
 
+var (
+	// ProjectSortNameAsc is sort target column `name` that used by [GET /v1/projects]
+	ProjectSortNameAsc = "name"
+
+	// ProjectSortIDAsc is sort target column `id` that used by [GET /v1/projects]
+	ProjectSortIDAsc = "id"
+
+	// ProjectSortNameDesc is sort target column `-name` that used by [GET /v1/projects]
+	ProjectSortNameDesc = "-name"
+
+	// ProjectSortIDDesc is sort target column `-id` that used by [GET /v1/projects]
+	ProjectSortIDDesc = "-id"
+
+	// ProjectSortCols is all sort target columns that used by [GET /v1/projects]
+	ProjectSortCols = []string{ProjectSortNameAsc, ProjectSortIDAsc, ProjectSortNameDesc, ProjectSortIDDesc}
+)
+
 // SakuraAPIFuncProject is interface of the Project functions
 type SakuraAPIFuncProject interface {
 	// NewFindProjectsParam returns new FindProjectParam

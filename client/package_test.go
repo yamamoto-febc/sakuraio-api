@@ -34,10 +34,22 @@ func TestMain(m *testing.M) {
 
 	ret := m.Run()
 
-	// cleanup projects
+	// cleanup modules
 	SakuraAPI.SetAPIKey(token, secret)
-	param := SakuraAPI.NewFindProjectsParam()
-	projects, err := SakuraAPI.FindProjects(param)
+	p1 := SakuraAPI.NewFindModulesParam()
+	modules, err := SakuraAPI.FindModules(p1)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, m := range modules {
+		deleteParam := SakuraAPI.NewDeleteModuleParam(m.ID)
+		SakuraAPI.DeleteModule(deleteParam)
+	}
+
+	// cleanup projects
+	p2 := SakuraAPI.NewFindProjectsParam()
+	projects, err := SakuraAPI.FindProjects(p2)
 	if err != nil {
 		panic(err)
 	}

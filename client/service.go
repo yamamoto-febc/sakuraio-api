@@ -6,6 +6,27 @@ import (
 	"github.com/yamamoto-febc/sakuraio-api/gen/models"
 )
 
+var (
+	// ServiceSortIDAsc is sort target column `id` that used by [GET /v1/services]
+	ServiceSortIDAsc = "id"
+	// ServiceSortNameAsc is sort target column `name` that used by [GET /v1/services]
+	ServiceSortNameAsc = "name"
+	// ServiceSortTokenAsc is sort target column `token` that used by [GET /v1/services]
+	ServiceSortTokenAsc = "token"
+	// ServiceSortIDDesc is sort target column `-id` that used by [GET /v1/services]
+	ServiceSortIDDesc = "-id"
+	// ServiceSortNameDesc is sort target column `-name` that used by [GET /v1/services]
+	ServiceSortNameDesc = "-name"
+	// ServiceSortTokenDesc is sort target column `-token` that used by [GET /v1/services]
+	ServiceSortTokenDesc = "-token"
+
+	// ServiceSortCols is all sort target columns that used by [GET /v1/services]
+	ServiceSortCols = []string{
+		ServiceSortIDAsc, ServiceSortNameAsc, ServiceSortTokenAsc,
+		ServiceSortIDDesc, ServiceSortNameDesc, ServiceSortTokenDesc,
+	}
+)
+
 // SakuraAPIFuncService is interface of the Service functions
 type SakuraAPIFuncService interface {
 	// NewFindServicesParam return new FindServiceParam

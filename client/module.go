@@ -6,6 +6,35 @@ import (
 	"github.com/yamamoto-febc/sakuraio-api/gen/models"
 )
 
+var (
+	// ModuleSortProjectAsc is sort target column `project` that used by [GET /v1/modules]
+	ModuleSortProjectAsc = "project"
+	// ModuleSortNameAsc is sort target column `name` that used by [GET /v1/modules]
+	ModuleSortNameAsc = "name"
+	// ModuleSortIDAsc is sort target column `id` that used by [GET /v1/modules]
+	ModuleSortIDAsc = "id"
+	// ModuleSortSerialNumberAsc is sort target column `serial_number` that used by [GET /v1/modules]
+	ModuleSortSerialNumberAsc = "serial_number"
+	// ModuleSortModelAsc is sort target column `model` that used by [GET /v1/modules]
+	ModuleSortModelAsc = "model"
+	// ModuleSortProjectDesc is sort target column `-project` that used by [GET /v1/modules]
+	ModuleSortProjectDesc = "-project"
+	// ModuleSortNameDesc is sort target column `-name` that used by [GET /v1/modules]
+	ModuleSortNameDesc = "-name"
+	// ModuleSortIDDesc is sort target column `-id` that used by [GET /v1/modules]
+	ModuleSortIDDesc = "-id"
+	// ModuleSortSerialNumberDesc is sort target column `-serial_number` that used by [GET /v1/modules]
+	ModuleSortSerialNumberDesc = "-serial_number"
+	// ModuleSortModelDesc is sort target column `-model` that used by [GET /v1/modules]
+	ModuleSortModelDesc = "-model"
+
+	// ModuleSortCols is all sort target columns that used by [GET /v1/modules]
+	ModuleSortCols = []string{
+		ModuleSortProjectAsc, ModuleSortNameAsc, ModuleSortIDAsc, ModuleSortSerialNumberAsc, ModuleSortModelAsc,
+		ModuleSortProjectDesc, ModuleSortNameDesc, ModuleSortIDDesc, ModuleSortSerialNumberDesc, ModuleSortModelDesc,
+	}
+)
+
 // SakuraAPIFuncModule is interface of the Module functions
 type SakuraAPIFuncModule interface {
 	// NewFindModulesParam returns new FindModuleParam
