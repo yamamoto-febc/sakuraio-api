@@ -1,0 +1,902 @@
+swagger: '2.0'
+
+info:
+  version: "1.0.1"
+  title: Sakura IoT Plartform API
+  description: |
+    コントロールパネルから変更できる操作をAPI経由で行うことができます。
+
+    ## APIキー
+
+    コントロールパネルの[APIキーメニュー](https://secure.sakura.ad.jp/iot/apikeys/)よりAPIキーを発行することができます。
+
+    発行されたキーの以下の2項目をBASIC認証のユーザー名とパスワードとして扱うことにより、認証が行われます。
+
+    * Token
+    * Secret
+
+host: api.sakura.io
+schemes:
+  - https
+basePath: "/"
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication with API Key
+
+paths:
+  /v1/auth/:
+    get:
+      tags:
+        - Auth
+      summary: Authentication
+      description: Returns information about authentication
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: Authenticated
+          schema:
+            $ref: "#/definitions/Auth"
+        401:
+          description: Unauthenticated
+
+  /v1/projects/:
+    get:
+      tags:
+        - Project
+      summary: Projects List
+      description: Returns projects list.
+      security:
+        - basicAuth: []
+      parameters:
+        - in: query
+          name: name
+          description: Keyword in name
+          required: false
+          type: string
+        - in: query
+          name: sort
+          description: Sort fields
+          required: false
+          type: string
+          enum:
+            - name
+            - id
+            - -name
+            - -id
+      responses:
+        200:
+          description: Projects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Project"
+        401:
+          description: Unauthenticated
+
+    post:
+      tags:
+        - Project
+      summary: Create Project
+      description: Creates a new project
+      security:
+        - basicAuth: []
+      parameters:
+        - in: body
+          name: Project
+          description: Project to create
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectUpdate"
+      responses:
+        201:
+          description: Created project
+          schema:
+            $ref: "#/definitions/Project"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+
+  /v1/projects/{projectId}/:
+    get:
+      tags:
+        - Project
+      summary: Get Project
+      description: Returns a project based on a single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          description: ID of project to fetch
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Project
+          schema:
+            $ref: "#/definitions/Project"
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+    put:
+      tags:
+        - Project
+      summary: Update Project
+      description: Update a project based on a single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          description: ID of project
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: Project
+          description: Project to create
+          required: true
+          schema:
+            $ref: "#/definitions/ProjectUpdate"
+      responses:
+        200:
+          description: Updated project
+          schema:
+            $ref: "#/definitions/Project"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+    delete:
+      tags:
+        - Project
+      summary: Delete Project
+      description: Delete a project based on single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: projectId
+          description: ID of project
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful
+        204:
+          description: No Content
+        409:
+          description: Conflict error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+  /v1/modules/:
+    get:
+      tags:
+        - Module
+      summary: Modules List
+      description: Returns modules list
+      security:
+        - basicAuth: []
+      parameters:
+        - in: query
+          name: project
+          description: ID of project
+          required: false
+          type: integer
+          format: int64
+        - in: query
+          name: serial_number
+          description: Serial number
+          required: false
+          type: string
+        - in: query
+          name: model
+          description: Model
+          required: false
+          type: string
+        - in: query
+          name: sort
+          description: Sort fields
+          required: false
+          type: string
+          enum:
+            - project
+            - name
+            - id
+            - serial_number
+            - model
+            - -project
+            - -name
+            - -id
+            - -serial_number
+            - -model
+      responses:
+        200:
+          description: Modules
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Module"
+        401:
+          description: Unauthenticated
+
+    post:
+      tags:
+        - Module
+      summary: Register Module
+      description: Regsiter a new module
+      security:
+        - basicAuth: []
+      parameters:
+        - in: body
+          name: Register Information
+          description: Module information to register
+          required: true
+          schema:
+            $ref: "#/definitions/ModuleRegister"
+      responses:
+        201:
+          description: Registered module
+          schema:
+            $ref: "#/definitions/Module"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+
+  /v1/modules/{moduleId}/:
+    get:
+      tags:
+        - Module
+      summary: Get Module
+      description: Returns a module based on a single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: moduleId
+          description: ID of module
+          required: true
+          type: string
+      responses:
+        200:
+          description: Module
+          schema:
+            $ref: "#/definitions/Module"
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+    put:
+      tags:
+        - Module
+      summary: Update Module
+      description: Update a module based on a single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: moduleId
+          description: ID of module
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/ModuleUpdate"
+      responses:
+        200:
+          description: Updated module
+          schema:
+            $ref: "#/definitions/Module"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthentication
+        404:
+          description: Not found
+
+    delete:
+      tags:
+        - Module
+      summary: Delete Module
+      description: Delete a module based on single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: moduleId
+          description: ID of module
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful
+        204:
+          description: No Content
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+  /v1/services/:
+    get:
+      tags:
+        - Service
+      summary: Service List
+      description: Returns services list
+      security:
+        - basicAuth: []
+      parameters:
+        - in: query
+          name: project
+          description: ID of project
+          required: false
+          type: integer
+        - in: query
+          name: type
+          description: Type of service
+          required: false
+          type: string
+          enum:
+            - websocket
+            - incoming-webhook
+            - outgoing-webhook
+        - in: query
+          name: sort
+          description: Sort fields
+          required: false
+          type: string
+          enum:
+            - name
+            - token
+            - id
+            - -name
+            - -token
+            - -id
+      responses:
+        200:
+          description: Services
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceBase"
+        401:
+          description: Unauthenticated
+
+
+  /v1/services/?type=websocket:
+    post:
+      tags:
+        - Service
+      summary: Create WebSocket Service
+      description: Create a new WebSocket service
+      security:
+        - basicAuth: []
+      parameters:
+        - in: body
+          name: WebSocketService
+          description: WebSocketService
+          required: true
+          schema:
+            $ref: "#/definitions/WebSocketServiceUpdate"
+      responses:
+        201:
+          description: Created WebSocket service
+          schema:
+            $ref: "#/definitions/WebSocketService"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+
+
+
+  /v1/services/?type=outgoing-webhook:
+    post:
+      tags:
+        - Service
+      summary: Create Outgoing Webhook Service
+      description: Create a new outgoing webhook service
+      security:
+        - basicAuth: []
+      parameters:
+        - in: body
+          name: OutgoingWebhookService
+          description: OutgoingWebhookService to create
+          required: true
+          schema:
+            $ref: "#/definitions/OutgoingWebhookServiceUpdate"
+      responses:
+        201:
+          description: Created outgoing webhook service
+          schema:
+            $ref: "#/definitions/OutgoingWebhookService"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+
+
+
+  /v1/services/?type=incoming-webhook:
+    post:
+      tags:
+        - Service
+      summary: Create Incoming Webhook Service
+      description: Create a new incoming webhook service
+      security:
+        - basicAuth: []
+      parameters:
+        - in: body
+          name: IncomingWebhookService
+          description: IncomingWebhookService to create
+          required: true
+          schema:
+            $ref: "#/definitions/IncomingWebhookServiceUpdate"
+      responses:
+        201:
+          description: Created incoming webhook service
+          schema:
+            $ref: "#/definitions/IncomingWebhookService"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+
+
+  /v1/services/{serviceId}/?type=websocket:
+    get:
+      tags:
+        - Service
+      summary: Get WebSocket Service
+      description: Returns a WebSocket Service based on a single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of service
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Service
+          schema:
+            $ref: "#/definitions/WebSocketService"
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+    put:
+      tags:
+        - Service
+      summary: Update WebSocket Service
+      description: Update a WebSocket Service based on single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of service
+          required: true
+          type: integer
+        - in: body
+          name: WebSocketService
+          description: WebSocketService
+          required: true
+          schema:
+            $ref: "#/definitions/WebSocketServiceUpdate"
+      responses:
+        200:
+          description: Updated servic
+          schema:
+            $ref: "#/definitions/WebSocketService"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+  /v1/services/{serviceId}/?type=outgoing-webhook:
+    get:
+      tags:
+        - Service
+      summary: Get OutgoingWebhook Service
+      description: Returns a OutgoingWebhook Service based on a single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of service
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Service
+          schema:
+            $ref: "#/definitions/OutgoingWebhookService"
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+    put:
+      tags:
+        - Service
+      summary: Update OutgoingWebhook Service
+      description: Update a OutgoingWebhook Service based on single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of service
+          required: true
+          type: integer
+        - in: body
+          name: OutgoingWebhookService
+          description: OutgoingWebhookService
+          required: true
+          schema:
+            $ref: "#/definitions/OutgoingWebhookServiceUpdate"
+      responses:
+        200:
+          description: Updated servic
+          schema:
+            $ref: "#/definitions/OutgoingWebhookService"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+  /v1/services/{serviceId}/?type=incoming-webhook:
+    get:
+      tags:
+        - Service
+      summary: Get IncomingWebhook Service
+      description: Returns a IncomingWebhook Service based on a single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of service
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Service
+          schema:
+            $ref: "#/definitions/IncomingWebhookService"
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+    put:
+      tags:
+        - Service
+      summary: Update IncomingWebhook Service
+      description: Update a IncomingWebhook Service based on single ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of service
+          required: true
+          type: integer
+        - in: body
+          name: IncomingWebhookService
+          description: IncomingWebhookService
+          required: true
+          schema:
+            $ref: "#/definitions/IncomingWebhookServiceUpdate"
+      responses:
+        200:
+          description: Updated servic
+          schema:
+            $ref: "#/definitions/IncomingWebhookService"
+        422:
+          description: Validation error
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+
+  /v1/services/{serviceId}/:
+    delete:
+      tags:
+        - Service
+      summary: Delete Service
+      description: Delete a service based on a singele ID
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: serviceId
+          description: ID of service
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful
+        204:
+          description: No Content
+        403:
+          description: Forbidden
+        401:
+          description: Unauthenticated
+        404:
+          description: Not found
+
+definitions:
+
+  Auth:
+    properties:
+      username:
+        type: string
+      JWT:
+        type: string
+      level:
+        type: integer
+        format: int64
+        enum:
+          - 100
+          - 200
+          - 300
+
+  ProjectUpdate:
+    title: Project
+    properties:
+      name:
+        type: string
+    required:
+      - name
+
+  Project:
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+
+
+  ModuleRegister:
+    title: Module Register Information
+    properties:
+      register_id:
+        type: string
+      register_pass:
+        type: string
+      name:
+        type: string
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+    required:
+      - register_id
+      - register_pass
+      - name
+      - project
+
+  ModuleUpdate:
+    title: Module
+    properties:
+      name:
+        type: string
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+    required:
+      - name
+      - project
+
+  Module:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+      is_online:
+        type: boolean
+
+  ServiceBase:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      type:
+        type: string
+        enum:
+          - websocket
+          - outgoing-webhook
+          - incoming-webhook
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+      JWT:
+        type: string
+
+
+  WebSocketServiceUpdate:
+    title: WebSocketService
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        description: '"websocket"'
+        enum:
+          - websocket
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+    required:
+      - name
+      - type
+      - project
+
+  WebSocketService:
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      type:
+        type: string
+        description: '"websocket"'
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+      JWT:
+        type: string
+      url:
+        type: string
+
+
+  OutgoingWebhookServiceUpdate:
+    title: OutgoingWebhookService
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        description: '"outgoing-webhook"'
+        enum:
+          - outgoing-webhook
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+      url:
+        type: string
+      secret:
+        type: string
+    required:
+      - name
+      - type
+      - project
+      - url
+
+  OutgoingWebhookService:
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      type:
+        type: string
+        description: '"outgoing-webhook"'
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+      JWT:
+        type: string
+      url:
+        type: string
+      secret:
+        type: string
+
+  IncomingWebhookServiceUpdate:
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        description: '"incoming-webhook"'
+        enum:
+          - incoming-webhook
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+      secret:
+        type: string
+    required:
+      - name
+      - type
+      - project
+
+  IncomingWebhookService:
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      type:
+        type: string
+        description: '"incoming-webhook"'
+      project:
+        type: integer
+        description: Project ID
+        format: int64
+      JWT:
+        type: string
+      url:
+        type: string
+      secret:
+        type: string
