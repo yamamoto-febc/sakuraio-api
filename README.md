@@ -6,7 +6,7 @@
 
 ## License
 
- `sakura-iot` Copyright (C) 2016 Kazumichi Yamamoto.
+ `sakuraio-api` Copyright (C) 2016 Kazumichi Yamamoto.
 
   This project is published under [Apache 2.0 License](LICENSE.txt).
   
