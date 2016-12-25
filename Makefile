@@ -56,4 +56,4 @@ docker-build: clean
 	sh -c "'$(CURDIR)/scripts/build_on_docker.sh' 'build-x'"
 
 
-.PHONY: default test vet fmt lint
+.PHONY: default build run clean test vet fmt golint
