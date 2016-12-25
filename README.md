@@ -2,7 +2,7 @@
 
 さくらのIoT Platform用 APIライブラリ(for golang)
 
-**This project is still developing.**
+[![GoDoc](https://godoc.org/github.com/yamamoto-febc/sakuraio-api?status.svg)](https://godoc.org/github.com/yamamoto-febc/sakuraio-api)
 
 ## License
 
