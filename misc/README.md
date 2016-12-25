@@ -12,7 +12,7 @@ $ curl -o api.yml https://api.sakura.io/v1/docs/api.yml
 
 ```bash
 $ cd gen
-$ docker run --rm -it -v /path/to/your/project/sakura-iot:/go/src/github.com/yamamoto-febc/sakura-iot -w /go/src/github.com/yamamoto-febc/sakura-iot/gen quay.io/goswagger/swagger generate client -f ../misc/api.yml -A sakuraIoT
+$ docker run --rm -it -v /path/to/your/project/sakura-iot:/go/src/github.com/yamamoto-febc/akuraio-api -w /go/src/github.com/yamamoto-febc/sakuraio-api/gen quay.io/goswagger/swagger generate client -f ../misc/api.yml -A sakuraIoT
 ```
 
 ## REMARK
